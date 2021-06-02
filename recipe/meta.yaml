@@ -1,0 +1,62 @@
+{% set name = "dpnp" %}
+{% set version = "0.6.2" %}
+{% set sha256 = "0ddcb7cd5860bd3c364087c18eb30a78198caafd52b0c15d69aa275c8ea250b2" %}
+
+package:
+    name: {{ name|lower }}
+    version: {{ version }}
+
+source:
+    url: https://github.com/IntelPython/{{ name }}/archive/{{ version }}.tar.gz
+    sha256: {{ sha256 }}
+
+build:
+    number: 0
+    script_env:
+      - ONEAPI_ROOT
+
+requirements:
+    build:
+      - {{ compiler('cxx') }}
+    host:
+      - python
+      - cmake >=3.16.5
+      - cython
+      - setuptools
+      - wheel
+      - dpctl >=0.5.0a0
+      - mkl-devel {{ mkl }}
+      - numpy
+    run:
+      - python
+      - dpctl >=0.5.0a0
+      - dpcpp_cpp_rt >=2021.1.1
+      - mkl-dpcpp >=2021.1.1
+      - numpy
+
+test:
+    requires:
+      - pytest
+      - setuptools
+    source_files:
+        - examples
+        - tests
+        - setup.cfg
+    commands:
+      - python -c "import dpnp"
+      - conda list
+      - pytest -s
+
+about:
+    home: https://github.com/IntelPython/dpnp
+    license: BSD-2-Clause
+    license_file: LICENSE.txt
+    description: |
+        <strong>LEGAL NOTICE: Use of this software package is subject to the
+        software license agreement (as set forth above, in the license section of
+        the installed Conda package and/or the README file) and all notices,
+        disclaimers or license terms for third party or open source software
+        included in or with the software.</strong>
+        <br/><br/>
+        EULA: <a href="https://opensource.org/licenses/BSD-2-Clause" target="_blank">BSD-2-Clause</a>
+        <br/><br/>
