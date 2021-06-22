@@ -18,6 +18,7 @@ build:
 requirements:
     build:
       - {{ compiler('cxx') }}
+      - {{ compiler('dpcpp') }}
     host:
       - python
       - cmake >=3.16.5
@@ -26,13 +27,13 @@ requirements:
       - wheel
       - dpctl >=0.5.0a0
       - mkl-devel {{ mkl }}
-      - numpy
+      - numpy >=1.17
     run:
       - python
       - dpctl >=0.5.0a0
       - dpcpp_cpp_rt >=2021.1.1
       - mkl-dpcpp >=2021.1.1
-      - numpy
+      - numpy >=1.17
 
 test:
     requires:
