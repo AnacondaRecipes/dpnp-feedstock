@@ -1,0 +1,20 @@
+diff --git a/tests/third_party/cupy/statistics_tests/test_meanvar.py b/tests/third_party/cupy/statistics_tests/test_meanvar.py
+index ce695381..aadd7ee8 100644
+--- a/tests/third_party/cupy/statistics_tests/test_meanvar.py
++++ b/tests/third_party/cupy/statistics_tests/test_meanvar.py
+@@ -149,13 +149,13 @@ class TestMeanVar(unittest.TestCase):
+         return xp.mean(a)
+ 
+     @testing.for_all_dtypes()
+-    @testing.numpy_cupy_allclose()
++    @testing.numpy_cupy_allclose(rtol=1e-6)
+     def test_mean_axis(self, xp, dtype):
+         a = testing.shaped_arange((2, 3, 4), xp, dtype)
+         return a.mean(axis=1)
+ 
+     @testing.for_all_dtypes()
+-    @testing.numpy_cupy_allclose()
++    @testing.numpy_cupy_allclose(rtol=1e-6)
+     def test_external_mean_axis(self, xp, dtype):
+         a = testing.shaped_arange((2, 3, 4), xp, dtype)
+         return xp.mean(a, axis=1)

@@ -9,6 +9,8 @@ package:
 source:
     url: https://github.com/IntelPython/{{ name }}/archive/{{ version }}.tar.gz
     sha256: {{ sha256 }}
+    patches:
+      - 0001-cupy-meanvar-test-tolerance.patch
 
 build:
     number: 0
