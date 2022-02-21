@@ -1,5 +1,5 @@
 {% set name = "dpnp" %}
-{% set version = "0.6.2" %}
+{% set version = "0.9.0" %}
 {% set sha256 = "0ddcb7cd5860bd3c364087c18eb30a78198caafd52b0c15d69aa275c8ea250b2" %}
 
 package:
@@ -12,40 +12,44 @@ source:
 
 build:
     number: 0
+    skip: True  # [not (x86_64 and linux)]
     script_env:
-      - ONEAPI_ROOT
+        - ONEAPI_ROOT
+    ignore_run_exports:
+        - dpcpp-cpp-rt  # follow intel channel's package and set this in run.
+        - mkl           # follow intel channel's package and set this in run.
 
 requirements:
     build:
-      - {{ compiler('cxx') }}
+        - {{ compiler('dpcpp') }}
     host:
-      - python
-      - cmake >=3.16.5
-      - cython
-      - setuptools
-      - wheel
-      - dpctl >=0.5.0a0
-      - mkl-devel {{ mkl }}
-      - numpy
+        - python
+        - cmake 3.19
+        - cython
+        - dpctl >=0.10
+        - mkl-devel {{ mkl }}
+        - numpy 1.19
+        - setuptools
+        - tbb-devel
+        - wheel
     run:
-      - python
-      - dpctl >=0.5.0a0
-      - dpcpp_cpp_rt >=2021.1.1
-      - mkl-dpcpp >=2021.1.1
-      - numpy
+        - python
+        - dpcpp-cpp-rt >={{ dpcpp_compiler_version }}
+        - dpctl >=0.10
+        - mkl >={{ mkl }}
+        - {{ pin_compatible('numpy') }}
 
 test:
     requires:
-      - pytest
-      - setuptools
+        - pytest
+        - setuptools
     source_files:
         - examples
         - tests
         - setup.cfg
     commands:
-      - python -c "import dpnp"
-      - conda list
-      - pytest -s
+        - python -c "import dpnp"
+        - pytest -s
 
 about:
     home: https://github.com/IntelPython/dpnp
