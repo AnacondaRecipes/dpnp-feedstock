@@ -57,6 +57,7 @@ test:
 about:
     home: https://github.com/IntelPython/dpnp
     license: BSD-2-Clause
+    license_family: BSD
     license_file: LICENSE.txt
     description: |
         <strong>LEGAL NOTICE: Use of this software package is subject to the
@@ -67,3 +68,6 @@ about:
         <br/><br/>
         EULA: <a href="https://opensource.org/licenses/BSD-2-Clause" target="_blank">BSD-2-Clause</a>
         <br/><br/>
+    summary: NumPy Drop-In Replacement for Intel(R) XPU
+    dev_url: https://github.com/IntelPython/dpnp
+    doc_url: https://intelpython.github.io/dpnp/
