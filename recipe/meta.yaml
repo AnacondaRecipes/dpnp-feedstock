@@ -1,6 +1,6 @@
 {% set name = "dpnp" %}
-{% set version = "0.6.2" %}
-{% set sha256 = "0ddcb7cd5860bd3c364087c18eb30a78198caafd52b0c15d69aa275c8ea250b2" %}
+{% set version = "0.9.0" %}
+{% set sha256 = "62f230f1be5aa895c11b6692acb78ce0b1200d20935551922ecd1cd9e9aa6dd0" %}
 
 package:
     name: {{ name|lower }}
@@ -12,44 +12,52 @@ source:
 
 build:
     number: 0
+    skip: True  # [not (x86_64 and linux)]
     script_env:
-      - ONEAPI_ROOT
+        - ONEAPI_ROOT
+    ignore_run_exports:
+        - dpcpp-cpp-rt  # follow intel channel's package and set this in run.
+        - mkl           # follow intel channel's package and set this in run.
+        - mkl-dpcpp     # follow intel channel's package and set this in run.
 
 requirements:
     build:
-      - {{ compiler('cxx') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('dpcpp') }}
     host:
-      - python
-      - cmake >=3.16.5
-      - cython
-      - setuptools
-      - wheel
-      - dpctl >=0.5.0a0
-      - mkl-devel {{ mkl }}
-      - numpy
+        - python
+        - cmake 3.19
+        - cython
+        - dpctl >=0.10
+        - mkl-devel {{ mkl }}
+        - mkl-devel-dpcpp {{ mkl }}
+        - numpy 1.20
+        - setuptools
+        - wheel
     run:
-      - python
-      - dpctl >=0.5.0a0
-      - dpcpp_cpp_rt >=2021.1.1
-      - mkl-dpcpp >=2021.1.1
-      - numpy
+        - python
+        - dpcpp-cpp-rt >={{ dpcpp_compiler_version }}
+        - dpctl >=0.10
+        - mkl >={{ mkl }}
+        - mkl-dpcpp >={{ mkl }}
+        - {{ pin_compatible('numpy') }}
 
 test:
     requires:
-      - pytest
-      - setuptools
+        - pytest
+        - setuptools
     source_files:
         - examples
         - tests
         - setup.cfg
     commands:
-      - python -c "import dpnp"
-      - conda list
-      - pytest -s
+        - python -c "import dpnp"
+        - pytest -s
 
 about:
     home: https://github.com/IntelPython/dpnp
     license: BSD-2-Clause
+    license_family: BSD
     license_file: LICENSE.txt
     description: |
         <strong>LEGAL NOTICE: Use of this software package is subject to the
@@ -60,3 +68,6 @@ about:
         <br/><br/>
         EULA: <a href="https://opensource.org/licenses/BSD-2-Clause" target="_blank">BSD-2-Clause</a>
         <br/><br/>
+    summary: NumPy Drop-In Replacement for Intel(R) XPU
+    dev_url: https://github.com/IntelPython/dpnp
+    doc_url: https://intelpython.github.io/dpnp/
